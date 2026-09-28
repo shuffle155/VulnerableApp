@@ -1,0 +1,14 @@
+﻿@model VulnerableApp.Models.Document
+@{
+	ViewData["Title"] = "Edit Document";
+}
+<form method="post" asp-action="Edit" class="mt-3">
+	<input type="hidden" name="id" value="@Model.Id" />
+	<input type="text" name="title" value="@Model.Title" disabled />
+	<div class="form-group mb-3">
+		<label for="content">New content:</label>
+		<textarea class="form-control" id="content" name="content">@Model.Content</textarea>
+	</div>
+	<button type="submit" class="btn btn-primary">Save</button>
+	<a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

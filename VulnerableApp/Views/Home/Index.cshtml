@@ -1,0 +1,13 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+}
+
+<div>
+	<ul>
+		@foreach (var user in Model)
+		{
+			<li>Tài khoản: @user.Username</li>
+			<li>Email: @user.Email</li>
+		}
+	</ul>
+</div>

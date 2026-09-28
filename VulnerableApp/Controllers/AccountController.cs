@@ -1,0 +1,56 @@
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using VulnerableApp.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace VulnerableApp.Controllers
+{
+    public class AccountController : Controller
+    {
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(String username)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var uname = context.Users.Include(u => u.Roles)
+                    .FirstOrDefault(u => u.Username == username);
+                if (uname != null)
+                {
+                    List<Claim> claims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, uname.Id.ToString()),
+                        new Claim(ClaimTypes.Name, uname.Username),
+                    };
+                    foreach (var role in uname.Roles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
+                    }
+                    ClaimsIdentity identity = new ClaimsIdentity(claims, "BacCookieAuth");
+                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync("BacCookieAuth", principal);
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.Error = "Invalid username";
+                return View();
+            }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("BacCookieAuth");
+            return RedirectToAction("Login", "Account");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return Content("ERROR 403");
+        }
+    }
+}
