@@ -1,7 +1,6 @@
 ﻿@{
-	ViewData["Title"] = "Đăng nhập hệ thống";
+	ViewData["Title"] = "Login";
 }
-
 <div class="row justify-content-center mt-5">
 	<div class="col-md-4">
 		<h3 class="text-center">Login</h3>
@@ -10,15 +9,15 @@
 			<div class="alert alert-danger">@ViewBag.Error</div>
 		}
 		<form method="post" asp-controller="Account" asp-action="Login">
-			<div class="form-group mb-3">
-				<label>Username:</label>
-				<input type="text" name="username" class="form-control" />
+			<div class="mb-3">
+				<label for="username">Username</label>
+				<input type="text" class="form-control" id="username" name="username">
 			</div>
-			<div class="form-group mb-3">
-				<label>Password:</label>
-				<input type="password" name="password" class="form-control" disabled />
+			<div class="mb-3">
+				<label for="password">Password</label>
+				<input type="password" class="form-control" id="password" name="password" disabled>
 			</div>
-			<button type="submit" class="btn btn-primary w-100">Login</button>
+			<button type="submit" class="btn btn-primary">Login</button>
 		</form>
 	</div>
 </div>

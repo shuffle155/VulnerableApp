@@ -8,6 +8,12 @@ namespace VulnerableApp.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public AccountController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet]
         public IActionResult Login()
         {
@@ -17,29 +23,28 @@ namespace VulnerableApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(String username)
         {
-            using (var context = new ApplicationDbContext())
+            var uname = _context.Users.Include(u => u.Roles)
+                .FirstOrDefault(u => u.Username == username);
+            if (uname != null)
             {
-                var uname = context.Users.Include(u => u.Roles)
-                    .FirstOrDefault(u => u.Username == username);
-                if (uname != null)
-                {
-                    List<Claim> claims = new List<Claim>()
+                List<Claim> claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.NameIdentifier, uname.Id.ToString()),
-                        new Claim(ClaimTypes.Name, uname.Username),
+                        new Claim(ClaimTypes.NameIdentifier,
+                        uname.Id.ToString()),
+                        new Claim(ClaimTypes.Name, uname.Username)
                     };
-                    foreach (var role in uname.Roles)
-                    {
-                        claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
-                    }
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, "BacCookieAuth");
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                    await HttpContext.SignInAsync("BacCookieAuth", principal);
-                    return RedirectToAction("Index", "Home");
+                foreach (var role in uname.Roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
                 }
-                ViewBag.Error = "Invalid username";
-                return View();
+                ClaimsIdentity identity = new ClaimsIdentity(claims,
+                    "BacCookieAuth");
+                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync("BacCookieAuth", principal);
+                return RedirectToAction("Index", "Home");
             }
+            ViewBag.Error = "Invalid username";
+            return View();
         }
 
         public async Task<IActionResult> Logout()

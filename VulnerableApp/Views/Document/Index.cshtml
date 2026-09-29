@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<VulnerableApp.Models.Document>
 @{
-	ViewData["Title"] = "Manage Documents";
+	ViewData["Title"] = "Manage documents";
 }
 <table class="table table-bordered mt-3">
 	<thead>
@@ -19,7 +19,7 @@
 				<td>
 					<a asp-action="Details" asp-route-id="@document.Id" class="btn btn-info btn-sm">View Details</a>
 					<a asp-action="Edit" asp-route-id="@document.Id" class="btn btn-warning btn-sm">Edit</a>
-					<a asp-action="Delete" asp-route-id="@document.Id" class="btn btn-danger btn-sm" onclick="return confirm('Sure you want to delete this document?');">Delete</a>
+					<a asp-action="Delete" asp-route-id="@document.Id" class="btn btn-danger btn-sm"">Delete</a>
 				</td>
 			</tr>
 		}

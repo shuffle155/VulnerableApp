@@ -1,8 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using VulnerableApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddAuthentication("BacCookieAuth").AddCookie("BacCookieAuth", options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration
+    .GetConnectionString("DefaultConnection")));
+builder.Services.AddAuthentication("BacCookieAuth")
+    .AddCookie("BacCookieAuth", options =>
 {
     options.Cookie.Name = "VulnerableApp.AuthCookie";
     options.LoginPath = "/Account/Login";
