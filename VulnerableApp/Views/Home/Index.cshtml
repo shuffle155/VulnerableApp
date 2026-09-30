@@ -3,11 +3,21 @@
 }
 
 <div>
-	<ul>
-		@foreach (var user in Model)
-		{
-			<li>Tài khoản: @user.Username</li>
-			<li>Email: @user.Email</li>
-		}
-	</ul>
+	@foreach (var user in Model)
+	{
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Account</th>
+					<th>Email</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>@user.Username</td>
+					<td>@user.Email</td>
+				</tr>
+			</tbody>
+		</table>
+	}
 </div>

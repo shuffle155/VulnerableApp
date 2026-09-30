@@ -14,6 +14,12 @@ namespace VulnerableApp.Controllers
             _context = context;
         }
 
+        private Document GetDocument(int id)
+        {
+            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            return document;
+        }
+
         [Authorize]
         public IActionResult Index()
         {
@@ -34,7 +40,7 @@ namespace VulnerableApp.Controllers
         [Authorize]
         public IActionResult Details(int id)
         {
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            Document document = GetDocument(id);
             if (document == null)
             {
                 return NotFound();
@@ -47,7 +53,7 @@ namespace VulnerableApp.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            Document document = GetDocument(id);
             if (document == null)
             {
                 return NotFound();
@@ -60,7 +66,7 @@ namespace VulnerableApp.Controllers
         [HttpPost]
         public IActionResult Edit(int id, string content)
         {
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            Document document = GetDocument(id);
             if (document == null)
             {
                 return NotFound();
@@ -72,7 +78,7 @@ namespace VulnerableApp.Controllers
 
         public IActionResult Delete(int id)
         {
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            Document document = GetDocument(id);
             if (document == null)
             {
                 return NotFound();

@@ -21,7 +21,7 @@ namespace VulnerableApp.Controllers
             return View(users);
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             return View();
         }

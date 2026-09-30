@@ -1,0 +1,45 @@
+﻿@{
+	ViewData["Title"] = "Project information";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="alert alert-warning" role="alert">
+	<h5 class="alert-heading">Research topic</h5>
+	<p class="mb-0">Detecting access control vulnerabilities for web applications using role-based request analysis</p>
+</div>
+
+<div class="card mt-3">
+	<div class="card-body">
+		<h5 class="card-title">Project description</h5>
+		<p class="card-text text-danger">
+			This is the vulnerable version of the web application. It is intentionally designed with Broken Access Control flaws to demonstrate exploitation scenarios for educational and research purposes.
+		</p>
+		<table class="table table-bordered mt-3">
+			<thead>
+				<tr>
+					<th scope="col">Feature</th>
+					<th scope="col">Expected behavior</th>
+					<th scope="col">Vulnerability</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Horizontal access control</td>
+					<td>Users should only access their own documents</td>
+					<td>Users can view and edit other users' documents by changing the id in the URL</td>
+				</tr>
+				<tr>
+					<td>Vertical access control</td>
+					<td>Administrative actions (e.g., Delete) must be restricted to authorized roles</td>
+					<td>The delete endpoint lacks [Authorize], allowing anonymous or unauthorized access</td>
+				</tr>
+				<tr>
+					<td>Id references</td>
+					<td>Database IDs should be obfuscated to prevent enumeration</td>
+					<td>Raw integer IDs (1, 2, 3...) are exposed in URLs and forms</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
