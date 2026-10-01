@@ -8,10 +8,10 @@ namespace VulnerableApp.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
         public AccountController(ApplicationDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         [HttpGet]
@@ -23,7 +23,7 @@ namespace VulnerableApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(String username)
         {
-            var uname = _context.Users.Include(u => u.Roles)
+            var uname = context.Users.Include(u => u.Roles)
                 .FirstOrDefault(u => u.Username == username);
             if (uname != null)
             {

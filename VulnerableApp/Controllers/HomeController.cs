@@ -6,18 +6,19 @@ namespace VulnerableApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly ILogger<HomeController> logger;
+        private readonly ApplicationDbContext context;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger,
+            ApplicationDbContext context)
         {
-            _logger = logger;
-            _context = context;
+            this.logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index()
         {
-            var users = _context.Users.ToList();
+            var users = context.Users.ToList();
             return View(users);
         }
 
@@ -26,10 +27,15 @@ namespace VulnerableApp.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None,
+            NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id
+                ?? HttpContext.TraceIdentifier
+            });
         }
     }
 }

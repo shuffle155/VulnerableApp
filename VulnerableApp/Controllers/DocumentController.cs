@@ -7,16 +7,16 @@ namespace VulnerableApp.Controllers
 {
     public class DocumentController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext context;
 
         public DocumentController(ApplicationDbContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
         private Document GetDocument(int id)
         {
-            var document = _context.Documents.FirstOrDefault(d => d.Id == id);
+            var document = context.Documents.FirstOrDefault(d => d.Id == id);
             return document;
         }
 
@@ -27,12 +27,13 @@ namespace VulnerableApp.Controllers
             var userId = User.FindFirst(ClaimTypes.NameIdentifier);
             if (User.IsInRole("Admin"))
             {
-                documents = _context.Documents.ToList();
+                documents = context.Documents.ToList();
             }
             else
             {
                 int uid = int.Parse(userId.Value);
-                documents = _context.Documents.Where(d => d.OwnerId == uid).ToList();
+                documents = context.Documents.Where(d => d.OwnerId == uid)
+                    .ToList();
             }
             return View(documents);
         }
@@ -72,7 +73,7 @@ namespace VulnerableApp.Controllers
                 return NotFound();
             }
             document.Content = content;
-            _context.SaveChanges();
+            context.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -83,8 +84,8 @@ namespace VulnerableApp.Controllers
             {
                 return NotFound();
             }
-            _context.Documents.Remove(document);
-            _context.SaveChanges();
+            context.Documents.Remove(document);
+            context.SaveChanges();
             return RedirectToAction("Index");
         }
     }
